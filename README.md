@@ -34,6 +34,31 @@ npm start
 - В Vercel Project Settings → Environment Variables добавь `MONGODB_URI` и `MONGODB_DB`.
 - Файловой JSON-БД больше нет: теперь хранение в MongoDB.
 
+## Как подключить Vercel MongoDB (пошагово)
+
+1. В Vercel открой проект → **Storage** → **Create Database** → **MongoDB** (Atlas).
+2. После создания нажми **Connect Project** (если не подключено автоматически).
+3. Скопируй строку подключения (`MONGODB_URI`) и имя БД (`MONGODB_DB`).
+4. В Vercel: **Project Settings → Environment Variables** добавь:
+   - `MONGODB_URI`
+   - `MONGODB_DB` (например `robochat`)
+5. Нажми **Redeploy** (или сделай новый push).
+
+### Локально
+
+Создай `.env.local`:
+
+```bash
+MONGODB_URI=твой_uri
+MONGODB_DB=robochat
+```
+
+Потом:
+
+```bash
+npm run dev
+```
+
 ## Основные возможности
 
 - Регистрация, вход, выход, сессия через httpOnly cookie.
