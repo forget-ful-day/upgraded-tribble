@@ -1,0 +1,16 @@
+:root { --bg:#060d06; --panel:#0e1a0f; --text:#63ff63; --accent:#1aa51a; }
+body { margin:0; font-family: Arial, sans-serif; background:var(--bg); color:var(--text); }
+body.theme-light { --bg:#eef2f8; --panel:#fff; --text:#111; --accent:#3567ff; }
+body.theme-ios26 { --bg:#e8f1ff; --panel:#fff; --text:#13203d; --accent:#0a84ff; }
+.hidden { display:none !important; }
+#app { display:grid; grid-template-columns: 240px 1fr 320px; gap:10px; height:100vh; padding:10px; box-sizing:border-box; }
+.panel { background:var(--panel); border-radius:14px; padding:12px; box-shadow:0 0 15px #0002; }
+#auth { width:420px; margin:8vh auto; }
+.row { display:flex; gap:8px; margin:8px 0; }
+input, button, select { padding:8px; border-radius:10px; border:1px solid #9993; background:#00000011; color:inherit; }
+button { cursor:pointer; background:var(--accent); color:white; border:none; }
+#chat-list, #group-results, #messages { max-height:70vh; overflow:auto; border:1px solid #9993; border-radius:10px; padding:6px; }
+.chat-item, .msg-item, .group-item { padding:6px; border-radius:8px; margin:3px 0; background:#00000014; cursor:pointer; }
+.selected { outline:2px solid var(--accent); }
+.msg-meta { font-size:12px; opacity:0.8; }
+.joke { opacity:0.8; font-size:12px; }

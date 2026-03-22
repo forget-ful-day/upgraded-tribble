@@ -1,0 +1,9 @@
+{
+  "name": "robochat",
+  "version": "2.0.0",
+  "description": "Robochat на Node.js + JSON DB",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

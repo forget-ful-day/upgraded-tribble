@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robochat</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="theme-matrix">
+  <div id="auth" class="panel">
+    <h1>🤖 Robochat</h1>
+    <div class="row">
+      <button id="tab-login">Вход</button>
+      <button id="tab-register">Регистрация</button>
+    </div>
+    <input id="auth-username" placeholder="Логин" />
+    <input id="auth-password" placeholder="Пароль" type="password" />
+    <input id="auth-recovery" placeholder="Секретный ответ (для регистрации)" />
+    <div class="row">
+      <button id="auth-submit">Войти</button>
+      <button id="auth-recover">Восстановить пароль</button>
+    </div>
+    <p class="joke">Шутка: если работает с первого раза — это подозрительно 😄</p>
+  </div>
+
+  <div id="app" class="hidden">
+    <aside class="sidebar panel">
+      <h3>Лента чатов</h3>
+      <div id="chat-list"></div>
+      <button id="logout">Выйти</button>
+    </aside>
+
+    <main class="panel content">
+      <header>
+        <h2 id="chat-title">Выберите чат</h2>
+        <small id="whoami"></small>
+      </header>
+      <div id="messages"></div>
+      <div class="row">
+        <input id="msg" placeholder="Введите сообщение" />
+        <button id="send">Отправить</button>
+        <button id="send-photo">Фото</button>
+        <button id="send-sticker">Стикер</button>
+      </div>
+      <div class="row">
+        <button id="react">Реакция</button>
+        <button id="pin">Закрепить</button>
+        <button id="delete">Удалить своё</button>
+        <button id="clear-select">Снять выбор</button>
+      </div>
+    </main>
+
+    <section class="panel controls">
+      <h3>Добавления</h3>
+      <input id="contact-username" placeholder="Контакт (из всех пользователей)" />
+      <button id="add-contact">Добавить контакт</button>
+
+      <hr/>
+      <input id="group-name" placeholder="Название группы" />
+      <input id="group-avatar" placeholder="Эмодзи авы группы" value="👥" />
+      <label><input id="group-private" type="checkbox" /> Приватная</label>
+      <input id="group-code" placeholder="Код приватной группы" />
+      <button id="create-group">Создать группу</button>
+
+      <hr/>
+      <input id="search-group" placeholder="Поиск группы по названию" />
+      <button id="find-group">Найти</button>
+      <div id="group-results"></div>
+
+      <hr/>
+      <h3>Настройки</h3>
+      <input id="profile-avatar" placeholder="Аватар" />
+      <input id="profile-status" placeholder="Подпись под именем" />
+      <input id="custom-emoji" placeholder="Свой эмодзи / стикер" />
+      <select id="theme">
+        <option value="matrix">Matrix</option>
+        <option value="light">Light</option>
+        <option value="ios26">iOS 26</option>
+      </select>
+      <input id="opacity" type="range" min="0.7" max="1" step="0.01" value="0.95" />
+      <button id="save-profile">Сохранить</button>
+      <button id="delete-account">Удалить аккаунт</button>
+
+      <h4>Версия и изменения</h4>
+      <div id="changelog"></div>
+      <p class="joke">Ещё шутка: TODO — это стиль жизни разработчика 🤓</p>
+    </section>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
