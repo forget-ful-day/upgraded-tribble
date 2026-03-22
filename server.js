@@ -239,7 +239,7 @@ async function handleApi(req, res, pathname, query) {
   return send(res, 404, { ok: false, error: 'Не найдено' });
 }
 
-const server = http.createServer(async (req, res) => {
+async function requestHandler(req, res) {
   const parsed = url.parse(req.url, true);
   const pathname = parsed.pathname;
 
@@ -248,8 +248,13 @@ const server = http.createServer(async (req, res) => {
   }
   if (serveStatic(req, res, pathname)) return;
   return send(res, 200, fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8'), 'text/html; charset=utf-8');
-});
+}
 
-server.listen(PORT, () => {
-  console.log(`Robochat (Node.js) запущен: http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  const server = http.createServer(requestHandler);
+  server.listen(PORT, () => {
+    console.log(`Robochat (Node.js) запущен: http://localhost:${PORT}`);
+  });
+} else {
+  module.exports = requestHandler;
+}

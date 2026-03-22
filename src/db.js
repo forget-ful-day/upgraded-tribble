@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_DIR = path.join(__dirname, '..', 'db');
+const DB_DIR = process.env.ROBOCHAT_DB_DIR
+  ? process.env.ROBOCHAT_DB_DIR
+  : (process.env.VERCEL ? path.join('/tmp', 'robochat-db') : path.join(__dirname, '..', 'db'));
 const FILES = {
   users: path.join(DB_DIR, 'users.json'),
   chats: path.join(DB_DIR, 'chats.json'),

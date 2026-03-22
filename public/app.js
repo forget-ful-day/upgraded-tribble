@@ -14,8 +14,14 @@ async function api(path, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
   if (state.username) headers['x-user'] = state.username;
   const res = await fetch(path, { ...options, headers });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Ошибка API');
+  const raw = await res.text();
+  let data = {};
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch (_e) {
+    throw new Error(`Ошибка API ${res.status}: ${raw.slice(0, 120)}`);
+  }
+  if (!res.ok) throw new Error(data.error || `Ошибка API ${res.status}`);
   return data;
 }
 

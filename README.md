@@ -44,3 +44,9 @@ npm start
 - `public/` — интерфейс.
 - `src/db.js` — JSON-хранилище.
 - `db/` — файлы базы.
+- `vercel.json` — роутинг для Vercel (все запросы идут в `server.js`).
+
+## Vercel
+
+- Для деплоя на Vercel добавлен `vercel.json`.
+- На Vercel JSON-БД пишется во временную папку `/tmp/robochat-db` (данные не постоянные между cold start).
