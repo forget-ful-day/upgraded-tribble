@@ -1,0 +1,13 @@
+:root { --bg:#071007; --card:#0f1b0f; --text:#62ff62; --accent:#1fa51f; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: Arial,sans-serif; background:var(--bg); color:var(--text); }
+.wrapper { display:grid; grid-template-columns: 260px 1fr 320px; gap:12px; height:100vh; padding:12px; }
+.card { background:var(--card); border-radius:14px; padding:12px; border:1px solid #ffffff18; }
+.list { max-height:70vh; overflow:auto; border:1px solid #ffffff20; border-radius:10px; padding:8px; }
+.item { padding:8px; margin:4px 0; border-radius:8px; cursor:pointer; background:#ffffff10; }
+.sel { outline:2px solid var(--accent); }
+.row { display:flex; gap:8px; margin:8px 0; }
+input,button,select { border-radius:10px; border:1px solid #ffffff28; padding:8px; background:#00000022; color:inherit; }
+button { background:var(--accent); color:white; cursor:pointer; border:none; }
+.hidden { display:none; }
+.auth { max-width:460px; margin:8vh auto; }
