@@ -53,8 +53,18 @@ function requireAuth(req, res) {
   return username;
 }
 
+function normalizePath(pathname) {
+  if (!pathname) return '/';
+  const trimmed = pathname.replace(/\/+$/, '');
+  return trimmed || '/';
+}
+
+function isPath(pathname, variants) {
+  return variants.includes(normalizePath(pathname));
+}
+
 async function handleApi(req, res, pathname, query) {
-  if (pathname === '/api/register' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/register', '/register']) && req.method === 'POST') {
     const { username, password, recoveryAnswer } = await parseBody(req);
     if (!username || !password) return send(res, 400, { ok: false, error: 'Логин и пароль обязательны' });
     const usersData = read('users');
@@ -64,7 +74,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/login' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/login', '/login']) && req.method === 'POST') {
     const { username, password } = await parseBody(req);
     const user = getUser(username);
     if (!user || user.passwordHash !== hash(password)) return send(res, 400, { ok: false, error: 'Неверный логин или пароль' });
@@ -72,7 +82,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true, username });
   }
 
-  if (pathname === '/api/recover' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/recover', '/recover']) && req.method === 'POST') {
     const { username, recoveryAnswer, newPassword } = await parseBody(req);
     const usersData = read('users');
     const user = usersData.users.find((u) => u.username === username);
@@ -83,13 +93,13 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/session' && req.method === 'GET') {
+  if (isPath(pathname, ['/api/session', '/session']) && req.method === 'GET') {
     const session = read('session');
     const user = session.username ? getUser(session.username) : null;
     return send(res, 200, { ok: true, username: user ? user.username : null });
   }
 
-  if (pathname === '/api/logout' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/logout', '/logout']) && req.method === 'POST') {
     write('session', { username: null });
     return send(res, 200, { ok: true });
   }
@@ -97,7 +107,7 @@ async function handleApi(req, res, pathname, query) {
   const username = requireAuth(req, res);
   if (!username) return true;
 
-  if (pathname === '/api/bootstrap' && req.method === 'GET') {
+  if (isPath(pathname, ['/api/bootstrap', '/bootstrap']) && req.method === 'GET') {
     const users = read('users').users;
     const chats = read('chats').chats;
     const groups = read('groups').groups;
@@ -108,7 +118,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true, me, chats: myChats, groups, publicUsers, meta });
   }
 
-  if (pathname === '/api/contact' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/contact', '/contact']) && req.method === 'POST') {
     const { username: contact } = await parseBody(req);
     const usersData = read('users');
     const me = usersData.users.find((u) => u.username === username);
@@ -125,7 +135,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/group/create' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/group/create', '/group/create']) && req.method === 'POST') {
     const { name, isPrivate, code, avatar } = await parseBody(req);
     const groupsData = read('groups');
     if (groupsData.groups.some((g) => g.name.toLowerCase() === String(name || '').toLowerCase())) return send(res, 400, { ok: false, error: 'Группа уже существует' });
@@ -139,7 +149,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/group/join' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/group/join', '/group/join']) && req.method === 'POST') {
     const { groupId, code } = await parseBody(req);
     const groupsData = read('groups');
     const group = groupsData.groups.find((g) => g.id === groupId);
@@ -155,13 +165,13 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/group/search' && req.method === 'GET') {
+  if (isPath(pathname, ['/api/group/search', '/group/search']) && req.method === 'GET') {
     const q = String(query.q || '').toLowerCase();
     const groups = read('groups').groups.filter((g) => g.name.toLowerCase().includes(q));
     return send(res, 200, { ok: true, groups });
   }
 
-  if (pathname === '/api/message/send' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/message/send', '/message/send']) && req.method === 'POST') {
     const { chatId, text, kind } = await parseBody(req);
     const chatsData = read('chats');
     const chat = chatsData.chats.find((c) => c.id === chatId && c.participants.includes(username));
@@ -171,7 +181,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/message/react' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/message/react', '/message/react']) && req.method === 'POST') {
     const { chatId, messageId, emoji } = await parseBody(req);
     const chatsData = read('chats');
     const chat = chatsData.chats.find((c) => c.id === chatId);
@@ -185,7 +195,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/message/delete' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/message/delete', '/message/delete']) && req.method === 'POST') {
     const { chatId, messageId } = await parseBody(req);
     const chatsData = read('chats');
     const chat = chatsData.chats.find((c) => c.id === chatId);
@@ -197,7 +207,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/message/pin' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/message/pin', '/message/pin']) && req.method === 'POST') {
     const { chatId, messageId } = await parseBody(req);
     const chatsData = read('chats');
     const chat = chatsData.chats.find((c) => c.id === chatId);
@@ -207,7 +217,7 @@ async function handleApi(req, res, pathname, query) {
     return send(res, 200, { ok: true });
   }
 
-  if (pathname === '/api/profile' && req.method === 'POST') {
+  if (isPath(pathname, ['/api/profile', '/profile']) && req.method === 'POST') {
     const { avatar, status, theme, opacity, customEmoji, deleteAccount } = await parseBody(req);
     const usersData = read('users');
     const me = usersData.users.find((u) => u.username === username);
@@ -233,7 +243,9 @@ const server = http.createServer(async (req, res) => {
   const parsed = url.parse(req.url, true);
   const pathname = parsed.pathname;
 
-  if (pathname.startsWith('/api/')) return handleApi(req, res, pathname, parsed.query);
+  if (pathname.startsWith('/api/') || ['/session', '/register', '/login', '/recover', '/logout', '/bootstrap', '/contact', '/profile'].includes(normalizePath(pathname)) || pathname.startsWith('/group/') || pathname.startsWith('/message/')) {
+    return handleApi(req, res, pathname, parsed.query);
+  }
   if (serveStatic(req, res, pathname)) return;
   return send(res, 200, fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8'), 'text/html; charset=utf-8');
 });
