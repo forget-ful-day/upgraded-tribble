@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { getDb } from '@/lib/mongodb';
 import { ok } from '@/lib/http';
 import { requireUser } from '@/lib/currentUser';

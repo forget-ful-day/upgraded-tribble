@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { ObjectId } from 'mongodb';
 import crypto from 'crypto';
 import { getDb } from '@/lib/mongodb';

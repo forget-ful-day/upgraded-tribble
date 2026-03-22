@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb';
 import { fail, ok } from '@/lib/http';

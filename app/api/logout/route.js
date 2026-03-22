@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { ok } from '@/lib/http';
 import { clearSession } from '@/lib/auth';
 import { cookies } from 'next/headers';

@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { ok } from '@/lib/http';
 import { getSessionUser } from '@/lib/auth';
 

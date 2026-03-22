@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { getDb } from '@/lib/mongodb';
 import { fail, ok } from '@/lib/http';
 import { hashPassword } from '@/lib/auth';
